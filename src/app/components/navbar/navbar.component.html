@@ -1,0 +1,55 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <a class="navbar-brand" href="#">Auth0 App</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarText">
+    <ul class="navbar-nav mr-auto">
+
+      <li class="nav-item" routerLinkActive="active">
+        <a class="nav-link" [routerLink]="[ '/home' ]">Home </a>
+      </li>
+      <li class="nav-item" routerLinkActive="active">
+        <a class="nav-link" [routerLink]="[ '/precios']">Precios</a>
+      </li>
+
+
+      <ng-container *ngIf="auth.isAuthenticated$ | async">
+        <li class="nav-item" routerLinkActive="active">
+          <a class="nav-link" [routerLink]="[ '/protegida']">Protegida</a>
+        </li>
+      </ng-container>
+
+
+
+    </ul>
+
+
+    <span class="navbar-text">
+
+
+
+      <!-- Para poder que funcione este NGIF es OBLIGATORIO envolver lo que queremos mostrar con algun contenedor, de lo contrario nos marcara un error -->
+      <div *ngIf="auth.isAuthenticated$ | async; else loggedOut">
+        <button 
+          class="btn btn-outline-danger"  
+          type="button"
+          (click)="auth.logout({ returnTo: document.location.origin })"
+          >Salir
+        </button>
+      </div>
+  
+      <ng-template #loggedOut>
+        <button 
+          #loggedOut
+          class="btn mr-1 btn-outline-primary" 
+          type="button"
+          (click)="auth.loginWithRedirect()"
+          >Ingresar
+        </button>
+      </ng-template>
+
+    </span>
+    
+  </div>
+</nav>
